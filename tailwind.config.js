@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         primary: '#0E43AD',
         secondary: '#fff',
-        tertiary: '#BAE2FE',
+        tertiary: '#465766',
         // system colors
         success: '#66D18D',
         danger: '#EC6969',

@@ -20,16 +20,16 @@ import { Component } from "@angular/core";
             </div>
         </div>
         <!-- Content -->
-        <div class="flex flex-col flex-1 items-stretch bg-blue-100">
+        <div class="flex flex-col flex-1 items-stretch bg-[#F7F7F7]">
             <!-- Header -->
-            <div class="flex items-center justify-between h-20 bg-white shadow-b-lg shadow-lg shadow-blue-300/20 px-5">
-                <h1 class="text-2xl font-semibold px-5 text-primary">Primero de secundaria</h1>
+            <div class="flex items-center justify-between h-20 bg-white px-10 shadow-md">
+                <h1 class="sub-title text-tertiary">Primero de secundaria</h1>
                 <!-- User -->
                 <div class="flex justify-between items-center m-5 rounded-lg">
                     <img src="../assets/pedros-profile.jpeg" class="rounded-full h-12 w-12 object-cover mx-5">
                     <div class="flex flex-col font-semibold">
                         <span> Pedro Tavarez <i class="fa-solid fa-chevron-down pl-3"></i></span>
-                        <span class="text-bold text-gray-600 text-xs">Profesor</span>
+                        <span class="font-bold text-tertiary text-xs">Profesor</span>
                     </div>
                     
                 </div>
