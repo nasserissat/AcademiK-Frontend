@@ -1,0 +1,7 @@
+{
+  "name": "academi-k",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
