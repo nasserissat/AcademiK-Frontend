@@ -51,7 +51,7 @@ import { Course, Grade, Subject } from "src/Models/models";
                   <td>{{grade.subject.description}}</td>
                   <td>{{grade.score}}</td>
                   <td class="flex justify-center" > 
-                     <div  [ngClass]="{'grade-A': grade.letterGrade === 'A', 'grade-B': grade.letterGrade === 'B', 'grade-C': grade.letterGrade === 'C', 'grade-F': grade.letterGrade === 'D'}">
+                     <div  [ngClass]="{'grade-A': grade.letterGrade === 'A', 'grade-B': grade.letterGrade === 'B', 'grade-C': grade.letterGrade === 'C', 'grade-F': grade.letterGrade === 'F'}">
                         <p>{{grade.letterGrade}}</p>                        
                      </div>
                   </td>
@@ -101,7 +101,7 @@ import { Course, Grade, Subject } from "src/Models/models";
          student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez', course: {id: 1, description: 'Primero de secundaria'}},
          subject: {id: 1, description: 'Español'},
           score: 40,
-         letterGrade: 'D'
+         letterGrade: 'F'
       },
       {
          id: 1,

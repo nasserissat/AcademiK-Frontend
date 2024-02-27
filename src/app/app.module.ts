@@ -9,12 +9,15 @@ import { GradePage } from './Pages/grade.page';
 import { AttendancePage } from './Pages/attendance.page';
 import { SettingsPage } from './Pages/settings.page';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from 'src/Components/modal.component';
+import { DataService } from 'src/services/data.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContainerComponent,
+    ModalComponent,
     StudentsPage,
     GradePage,
     AttendancePage,
@@ -24,9 +27,10 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [ DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
