@@ -11,7 +11,10 @@
     @apply text-xl font-bold;
 }
 .input {
-    @apply border-2 p-2 py-3.5 rounded-md max-h-14 border-none outline-none pl-10 focus:outline-primary focus:outline-offset-2 duration-150;
+    @apply border-2 p-2 py-3.5 rounded-md max-h-14 border-none outline-none focus:outline-primary focus:outline-offset-2 duration-150;
+    &.search {
+        @apply pl-10
+    }
 }
 .button {
     @apply px-2.5 py-3.5 rounded-lg duration-200 cursor-pointer hover:scale-105 ease-in-out shine-effect;

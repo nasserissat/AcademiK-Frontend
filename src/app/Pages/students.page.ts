@@ -9,7 +9,7 @@ import { Student } from "src/Models/models";
             <!-- search-bar -->
             <div class="flex items-center relative w-1/2 mr-3">
               <i class="fa-solid fa-magnifying-glass search-icon pl-2 absolute left-0"></i>
-              <input type="text" class="input w-full" placeholder="Buscar estudiantes..." >
+              <input type="text" class="input search w-full" placeholder="Buscar estudiantes..." >
             </div>
             <!-- filter -->
             <div class="bg-white rounded-lg py-3.5">

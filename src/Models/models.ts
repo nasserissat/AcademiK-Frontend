@@ -21,8 +21,13 @@ export type Attendance = {
     id: number;
     date: Date;
     attended: boolean;
-    student: Item;
+    student: {
+        id: number
+        picture: string
+        name: string
+    }
     subject: Item;
+    course: Item;
 };
 export type AttendanceData = {
     id: number;
@@ -30,13 +35,18 @@ export type AttendanceData = {
     attended: boolean;
     studentId: number;
     subjectId: number;
+    courseId: number;
 };
 
 export type Grade = {
     id: number;
     score: number;
     letterGrade: string;
-    student: Item;
+    student: {
+        id: number
+        picture: string
+        name: string
+    }
     subject: Item;
 };
 export type GradeData = {
@@ -46,6 +56,8 @@ export type GradeData = {
     studentId: number;
     subjectId: number;
 };
+export type Course = Item
+export type Subject = Item
 
 export type Item = {
     id: number
