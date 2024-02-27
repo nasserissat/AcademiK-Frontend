@@ -23,7 +23,35 @@
         @apply bg-secondary/90 text-white p-2 py-3.5 rounded-lg;
     }
 }
+.table.table{
+    @apply py-3.5 px-2.5 text-center items-center w-full whitespace-nowrap mt-4;
+    thead {
+        @apply bg-white shadow-md;
+        th{
+            @apply text-tertiary/60 px-4 md:px-2 py-4 2xl:py-6 font-bold;
 
+        }
+    }
+    tbody{
+        tr{
+            @apply border-b border-tertiary/20 hover:bg-gray-100;
+        }
+        td{
+            @apply px-4 md:px-2 py-4 2xl:pb-6 bg-white mb-6
+        }
+
+    }
+}
+
+.edit {
+    @apply p-2 hover:scale-110 duration-150 cursor-pointer text-warning hover:text-warning/70;
+}
+.delete {
+    @apply p-2 hover:scale-110 duration-150 cursor-pointer text-danger hover:text-danger/70
+}
+.info {
+    @apply duration-150 cursor-pointer text-primary hover:text-primary/70
+}
 .shine-effect {
     position: relative;
     overflow: hidden;
