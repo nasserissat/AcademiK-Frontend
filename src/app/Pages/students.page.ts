@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Item, Student, StudentData } from "src/Models/models";
 import { DataService } from "src/services/data.service";
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
     selector: 'students-page.ts',
     template: `
@@ -126,13 +128,13 @@ export class StudentsPage {
   editing: number | false = false
   student_form: FormGroup
 
-  constructor( private fb: FormBuilder, private data: DataService){
+  constructor( private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
     this.student_form = this.fb.group({
       name: ['', Validators.required],
       last_name: ['', Validators.required],
       gender: ['', Validators.required],
       age: ['', Validators.required],
-      grade: ['', Validators.required],
+      course: ['', Validators.required],
     })
 
   }

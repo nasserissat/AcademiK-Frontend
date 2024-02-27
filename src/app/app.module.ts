@@ -12,6 +12,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from 'src/Components/modal.component';
 import { DataService } from 'src/services/data.service';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,9 @@ import { DataService } from 'src/services/data.service';
     NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot(),
+    HttpClientModule
   ],
   providers: [ DataService],
   bootstrap: [AppComponent]
