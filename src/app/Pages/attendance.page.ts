@@ -34,8 +34,8 @@ import { Attendance, Course, Subject } from "src/Models/models";
       <!-- table -->
         <table class="table">
 				<thead>
-               <th>Estudiante</th>
-               <th class="rounded-l-lg">Curso</th>
+               <th class="rounded-l-lg">Estudiante</th>
+               <th>Curso</th>
                <th>Materia</th>
                <th>Fecha</th>
                <th>Hora</th>

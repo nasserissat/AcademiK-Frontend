@@ -55,6 +55,19 @@
 .info {
     @apply duration-150 cursor-pointer text-primary hover:text-primary/70
 }
+.grade-A {
+    @apply bg-[#E4F6EB] rounded-lg h-8 my-3 w-20 flex items-center justify-center text-success font-bold
+}
+.grade-B {
+    @apply bg-[#e2f1fd] rounded-lg h-8 my-3 w-20 flex items-center justify-center text-info font-bold
+}
+.grade-C {
+    @apply bg-[#FDF1E2] rounded-lg h-8 my-3 w-20 flex items-center justify-center text-warning font-bold
+}
+.grade-F {
+    @apply bg-[#FBE6E5] rounded-lg h-8 my-3 w-20 flex items-center justify-center text-danger font-bold
+}
+
 .shine-effect {
     position: relative;
     overflow: hidden;

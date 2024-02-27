@@ -13,7 +13,7 @@ module.exports = {
         success: '#66D18D',
         danger: '#EC6969',
         warning: '#F4B74F',
-        info: '#BAE2FE',
+        info: '#6A8FCE',
       }
     },
   },

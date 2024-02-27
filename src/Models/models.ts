@@ -46,6 +46,7 @@ export type Grade = {
         id: number
         picture: string
         name: string
+        course: Item;
     }
     subject: Item;
 };
