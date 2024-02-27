@@ -18,7 +18,7 @@ import { Student } from "src/Models/models";
             <!-- add student button -->
             <button class="button primary mx-5">
               <i class="fa-solid fa-plus"></i>
-              Botón primario
+              Agregar estudiante
             </button>
           </div>
       </div>
@@ -29,14 +29,14 @@ import { Student } from "src/Models/models";
             <th class="rounded-l-lg">Foto</th>
             <th>Nombre</th>
 						<th>Apellido</th>
-						<th>edad</th>
-						<th>genero</th>
+						<th>Edad</th>
+						<th>Género</th>
 						<th>Grado</th>
 						<th class="rounded-r-lg">Acciones</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let student of students">
+					<tr *ngFor="let student of students | paginate: { itemsPerPage: 6, currentPage: p }">
             <td>  
               <div class="flex justify-center">
                 <img [src]="student.picture" alt="student" class="h-16 w-16 rounded-full object-cover">
@@ -55,13 +55,16 @@ import { Student } from "src/Models/models";
           </tr>
 				</tbody>
 			</table> 
+      <div class="flex w-full bg-white justify-end py-4">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
 
 
     `,
     styles: []
 })
 export class StudentsPage {
-  
+  p: number = 1;
   constructor(){
 
   }

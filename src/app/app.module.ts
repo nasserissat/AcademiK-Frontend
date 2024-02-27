@@ -8,6 +8,7 @@ import { StudentsPage } from './Pages/students.page';
 import { GradePage } from './Pages/grade.page';
 import { AttendancePage } from './Pages/attendance.page';
 import { SettingsPage } from './Pages/settings.page';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SettingsPage } from './Pages/settings.page';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

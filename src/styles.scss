@@ -28,16 +28,16 @@
     thead {
         @apply bg-white shadow-md;
         th{
-            @apply text-tertiary/60 px-4 md:px-2 py-4 2xl:py-6 font-bold;
+            @apply text-tertiary/60 px-4 md:px-2 py-4 2xl:py-8 font-bold;
 
         }
     }
     tbody{
         tr{
-            @apply border-b border-tertiary/20 hover:bg-gray-100;
+            @apply border-b border-tertiary/20;
         }
         td{
-            @apply px-4 md:px-2 py-4 2xl:pb-6 bg-white mb-6
+            @apply px-4 md:px-2 py-4 2xl:py-5 bg-white
         }
 
     }
