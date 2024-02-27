@@ -22,6 +22,24 @@
 .label{
     @apply text-tertiary/60 font-bold mb-2;
 }
+.button-small {
+    @apply px-2.5 py-2 rounded-lg duration-200 cursor-pointer text-xs;
+    &.primary{
+        @apply bg-primary/90 text-white shine-effect hover:scale-105 ease-in-out;
+    }
+    &.secondary{
+        @apply bg-secondary/90 text-white shine-effect hover:scale-105 ease-in-out;
+    }
+    &.success{
+        @apply bg-success text-white shine-effect;
+    }
+    &.danger {
+        @apply bg-danger hover:bg-red-300 duration-300 text-white;
+    }
+    &.warning {
+        @apply bg-warning hover:bg-yellow-300 duration-300 text-white;
+    }
+}
 .button {
     @apply px-2.5 py-3.5 rounded-lg duration-200 cursor-pointer;
 

@@ -67,6 +67,21 @@ import { ToastrService } from 'ngx-toastr';
       <div class="grid grid-cols-2 p-5 items-center justify-center">
         <h1 class="col-span-2 text-xl text-gray-500 font-medium py-5 uppercase text-center">{{creating ? 'Agregar estudiante' : 'Editar estudiante'}}</h1>
        <form (ngSubmit)="save()" [formGroup]="student_form" class="col-span-2 grid grid-cols-2" > 
+        <div class="form-container col-span-2">
+            <label for="picture" class="flex flex-col items-center justify-center py-12 w-56 h-56 max-w-56 min-w-56 border-4 border-dashed border-gray-300 rounded-lg relative cursor-pointer">
+              <div class="flex flex-col items-center justify-center absolute text-lg text-white font-bold bg-black bg-opacity-20 w-full h-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                <span *ngIf="!image_seleccionada">Insertar imagen</span>
+              </div>
+              <input type="file" id="picture" accept="image/*" class="hidden" (change)="onImageSelected($event)"/>
+              <img *ngIf="image_seleccionada" [src]="getImagenURL()" alt="Vista previa de la imagen" />					  
+            </label>
+            <div class="flex justify-center">
+              <button *ngIf="image_seleccionada" class="button-small danger w-auto" type="button" (click)="image_seleccionada = null">Quitar imagen</button>
+            </div>
+          </div>
           <div class="form-container ml-4">
               <label class="label" for="name">Nombre: </label>
               <input formControlName="name" type="text" class="input bg-tertiary/5" name="name" id="name" placeholder="Nombre del estudiante">
@@ -130,6 +145,7 @@ export class StudentsPage {
 
   constructor( private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
     this.student_form = this.fb.group({
+      image: ['', Validators.required],
       name: ['', Validators.required],
       last_name: ['', Validators.required],
       gender: ['', Validators.required],
@@ -176,6 +192,21 @@ export class StudentsPage {
     
   }
   
+image_seleccionada!: any;
+
+onImageSelected(event: any) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = () => {
+  const base64data = reader.result as string;
+  this.image_seleccionada = base64data;
+  };
+  reader.readAsDataURL(file);
+}
+
+getImagenURL() {
+  return this.image_seleccionada;
+}
   
   // data dummie for testing
   students: Student[] = [
