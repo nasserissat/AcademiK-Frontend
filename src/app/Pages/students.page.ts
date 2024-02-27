@@ -58,8 +58,6 @@ import { Student } from "src/Models/models";
       <div class="flex w-full bg-white justify-end py-4">
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
-
-
     `,
     styles: []
 })

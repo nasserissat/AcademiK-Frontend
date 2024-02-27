@@ -39,7 +39,7 @@ import { Attendance, Course, Subject } from "src/Models/models";
                <th>Materia</th>
                <th>Fecha</th>
                <th>Hora</th>
-               <th>Asistió</th>
+               <th>Estado</th>
                <th class="rounded-r-lg">Acciones</th>
 				</thead>
 				<tbody>
@@ -54,7 +54,11 @@ import { Attendance, Course, Subject } from "src/Models/models";
                   <td>{{attendance.subject.description}}</td>
                   <td>{{attendance.date | date}}</td>
                   <td>{{attendance.date | date:"HH:MM:SS"}}</td>
-                  <td>{{attendance.attended}}</td>
+                  <td class="flex justify-center" > 
+                     <div  [ngClass]="{'grade-A': attendance.status === 1, 'grade-F': attendance.status  === 2, 'grade-C': attendance.status  === 3}">
+                        <p>{{attendance.status === 1 ? 'Presente' : attendance.status === 2 ?  'Ausente' : 'Excusa'}}</p>                        
+                     </div>
+                  </td>
                   <td class="actions space-x-4 text-xl">
                      <i class="fa-solid fa-pen-to-square edit" (click)="editAttendance(attendance.id)"></i>
                      <i class="fa-solid fa-trash-can delete" (click)="deleteAttendance(attendance.id)"></i>
@@ -85,7 +89,7 @@ import { Attendance, Course, Subject } from "src/Models/models";
    {
       id: 1,
       date: new Date(),
-      attended: true,
+      status: 1,
       student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
       subject: {id: 1, description: 'Español'},
       course: {id: 1, description: 'Primero de secundaria'}
@@ -93,7 +97,7 @@ import { Attendance, Course, Subject } from "src/Models/models";
    {
       id: 1,
       date: new Date(),
-      attended: true,
+      status: 3,
       student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
       subject: {id: 1, description: 'Español'},
        course: {id: 1, description: 'Primero de secundaria'}
@@ -101,7 +105,7 @@ import { Attendance, Course, Subject } from "src/Models/models";
    {
       id: 1,
       date: new Date(),
-      attended: true,
+      status: 2,
       student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
       subject: {id: 1, description: 'Español'},
        course: {id: 1, description: 'Primero de secundaria'}
@@ -109,7 +113,7 @@ import { Attendance, Course, Subject } from "src/Models/models";
    {
       id: 1,
       date: new Date(),
-      attended: true,
+      status: 1,
       student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
       subject: {id: 1, description: 'Español'},
        course: {id: 1, description: 'Primero de secundaria'}

@@ -20,7 +20,7 @@ export type StudentData = {
 export type Attendance = {
     id: number;
     date: Date;
-    attended: boolean;
+    status: AttendanceStatusEnum;
     student: {
         id: number
         picture: string
@@ -32,7 +32,7 @@ export type Attendance = {
 export type AttendanceData = {
     id: number;
     date: Date;
-    attended: boolean;
+    statusId: number;
     studentId: number;
     subjectId: number;
     courseId: number;
@@ -63,4 +63,10 @@ export type Subject = Item
 export type Item = {
     id: number
     description: string
+}
+
+export enum AttendanceStatusEnum {
+    Presente = 1,
+    Ausente,
+    Excusa
 }
