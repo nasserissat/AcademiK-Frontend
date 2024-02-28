@@ -28,7 +28,11 @@ export class DataService {
       console.log(this.myAppUrl + `/api/student/${id}`)
       return this.http.delete<void>(this.myAppUrl + `/api/student/${id}`)
    }
-
+   getImageUrl(filename: string): string {
+      const sanitizedFilename = filename.replace('Resources/', '');
+      return `${this.myAppUrl}/api/students/image/${sanitizedFilename}`;
+    }
+    
    //  Attendances endpoints:
    getAllAttendances(): Observable<Attendance[]>{
    return this.http.get<Attendance[]>(this.myAppUrl + '/api/attendances')
@@ -44,4 +48,5 @@ export class DataService {
    addGrade(grade: GradeData): Observable<void>{
       return this.http.post<void>(this.myAppUrl + `/api/grade/add`, grade)
    }
+ 
 }

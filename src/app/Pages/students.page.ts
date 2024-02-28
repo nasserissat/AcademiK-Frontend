@@ -43,7 +43,7 @@ import { ToastrService } from 'ngx-toastr';
 					<tr *ngFor="let student of students | paginate: { itemsPerPage: 6, currentPage: p }">
             <td>  
               <div class="flex justify-center">
-                <img [src]="student.picture" alt="student" class="h-16 w-16 rounded-full object-cover">
+                <img [src]="getImageUrl(student.picture)" alt="student" class="h-16 w-16 rounded-full object-cover shadow">
               </div>              
             </td>
             <td>
@@ -76,7 +76,7 @@ import { ToastrService } from 'ngx-toastr';
                 <span *ngIf="!image_seleccionada">Insertar imagen</span>
               </div>
               <input type="file" id="picture" accept="image/*" class="hidden" (change)="onImageSelected($event)"/>
-              <img *ngIf="image_seleccionada" [src]="getImagenURL()" alt="Vista previa de la imagen" />					  
+              <img *ngIf="image_seleccionada" [src]="loadImage()" alt="Vista previa de la imagen" />					  
             </label>
             <div class="flex justify-center">
               <button *ngIf="image_seleccionada" class="button-small danger w-auto" type="button" (click)="image_seleccionada = null">Quitar imagen</button>
@@ -211,8 +211,11 @@ onImageSelected(event: any) {
   reader.readAsDataURL(file);
 }
 
-getImagenURL() {
+loadImage() {
   return this.image_seleccionada;
+}
+getImageUrl(filename: string): string {
+  return this.data.getImageUrl(filename);
 }
   
   // data dummie for testing
