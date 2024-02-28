@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Item, Student, StudentData } from "src/Models/models";
 import { DataService } from "src/services/data.service";
 import { ToastrService } from 'ngx-toastr';
-
-
 @Component({
     selector: 'students-page.ts',
     template: `
@@ -52,8 +50,8 @@ import { ToastrService } from 'ngx-toastr';
             </td>
             <td>{{student.lastName}}</td>
             <td>{{student.age | number}}</td>
-            <td>{{student.gender}}</td>
-            <td>{{student.courseName}}</td>
+            <td>{{student.gender.description}}</td>
+            <td>{{student.course.description}}</td>
             <td class="actions space-x-4 text-xl">
               <i class="fa-solid fa-pen-to-square edit" (click)="editStudent(student.id)"></i>
               <i class="fa-solid fa-trash-can delete" (click)="deleteStudent(student.id)"></i>
@@ -63,10 +61,10 @@ import { ToastrService } from 'ngx-toastr';
       <div class="flex w-full bg-white justify-end py-4">
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
-      <!-- Add students modal -->
+      <!-- Save students modal -->
       <modal-component *ngIf="creating || editing">
       <div class="grid grid-cols-2 p-5 items-center justify-center">
-        <h1 class="col-span-2 text-xl text-gray-500 font-medium py-5 uppercase text-center">{{creating ? 'Agregar estudiante' : 'Editar estudiante'}}</h1>
+        <h1 class="col-span-2 text-xl text-gray-500 font-medium py-5 uppercase text-center">{{!this.editing ? 'Agregar estudiante' : 'Editar estudiante'}}</h1>
        <form (ngSubmit)="save()" [formGroup]="student_form" class="col-span-2 grid grid-cols-2" > 
         <div class="form-container col-span-2">
             <label for="picture" class="flex flex-col items-center justify-center py-12 w-56 h-56 max-w-56 min-w-56 border-4 border-dashed border-gray-300 rounded-lg relative cursor-pointer">
@@ -78,10 +76,10 @@ import { ToastrService } from 'ngx-toastr';
               </div>
               <input type="file" id="picture" accept="image/*" class="hidden" (change)="onImageSelected($event)"/>
               <img *ngIf="image_seleccionada" [src]="loadImage()" alt="Vista previa de la imagen" />					  
+              <div class="flex justify-center absolute top-0 right-0 z-10">
+                <button *ngIf="image_seleccionada" class="button-small danger w-auto" type="button" (click)="image_seleccionada = null">X</button>
+              </div>
             </label>
-            <div class="flex justify-center">
-              <button *ngIf="image_seleccionada" class="button-small danger w-auto" type="button" (click)="image_seleccionada = null">Quitar imagen</button>
-            </div>
           </div>
           <div class="form-container ml-4">
               <label class="label" for="name">Nombre: </label>
@@ -143,6 +141,7 @@ export class StudentsPage {
   creating: boolean = false;
   editing: number | false = false
   student_form: FormGroup
+  students: Student[] = []
 
   constructor( private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
     this.getAllStudents();
@@ -156,12 +155,14 @@ export class StudentsPage {
     })
 
   }
+  // Obtener todos los estudiantes
   getAllStudents(){
     return this.data.getAllStudents().subscribe((students: Student[]) =>{ 
         this.students = students
         console.log('listado de estudiantes: ', this.students)
     }), (err: any) => console.log(err)
   }
+  // Guardar y editar
   save(){
       let student_data: StudentData = { 
         Picture: this.image_seleccionada,
@@ -172,21 +173,29 @@ export class StudentsPage {
         CourseId: parseInt(this.student_form.get('course')?.value)
        };
       console.log('datos del estudiante: ', student_data)
-      this.data.addStudent(student_data).subscribe(
-        (result) => {
-          this.toastr.success('Estudiante agregado exitosamente', 'estudiante agregado!')
-          console.log(result)
-          this.getAllStudents();
-          this.student_form.reset();
-          this.creating = false
-        },
-        (error) => {
-          this.toastr.error('Error: ' + error.error.error, 'No se pudo agregar el estudiante')
-          console.log(error)
-          this.creating = true
-        }
-      );
+      if(this.editing){
+        this.data.updateStudent(this.editing, student_data).subscribe(() => {
+            this.toastr.success('Estudiante actualizado exitosamente', 'Estudiante actualizado!')
+            this.getAllStudents();
+            this.student_form.reset();
+            this.creating = this.editing = false
+          }, (error) => {
+            this.toastr.error('Error: ' + error.error.error, 'No se pudo actualizar el estudiante')
+            console.log(error)
+          });
+      }else{
+        this.data.addStudent(student_data).subscribe(() => {
+            this.toastr.success('Estudiante agregado exitosamente', 'Estudiante agregado!')
+            this.getAllStudents();
+            this.student_form.reset();
+            this.creating = this.editing = false
+          }, (error) => {
+            this.toastr.error('Error: ' + error.error.error, 'No se pudo agregar el estudiante')
+            console.log(error)
+          });
+      }
   }
+  // Eliminar estudiante
   deleteStudent(id: number){
     let response = confirm('¿Está seguro de que desea eliminar este estudiante?')
     if(response == true){
@@ -201,19 +210,33 @@ export class StudentsPage {
         )
     }
   }
-  
+
+  //Cargar los datos del estudiante seleccionado para editarlo
   editStudent(id: number){
     this.editing = id;
-    
+    this.data.getStudentById(id).subscribe(
+      (student: Student) => {
+        this.student_form.patchValue({
+          name: student.firstName,
+          last_name: student.lastName,
+          gender: student.gender.id,
+          course: student.course.id,
+          age: student.age, 
+        });
+        if(student.picture){
+          this.image_seleccionada = this.getImageUrl(student.picture)
+        }
+      })
   }
+  // Resetear el modal al cerrarlo
   closeModal(){
     this.creating = this.editing = false;
      this.student_form.reset();
      this.image_seleccionada = null
   }
   
+  // Logica para convertir, seleccionar y obtener una imagen
 image_seleccionada!: any;
-
 onImageSelected(event: any) {
   const file = event.target.files[0];
   const reader = new FileReader();
@@ -223,95 +246,9 @@ onImageSelected(event: any) {
   };
   reader.readAsDataURL(file);
 }
-
-loadImage() {
-  return this.image_seleccionada;
-}
-getImageUrl(filename: string): string {
-  return this.data.getImageUrl(filename);
-}
-  
-  // data dummie for testing
-  students: Student[] = [
-  //   {
-  //     id: 1,
-  //     picture: "../../assets/student1.avif",
-  //     firstName: "Juan",
-  //     lastName: "Pérez",
-  //     gender: { id: 1, description: "Male" },
-  //     age: 16,
-  //     course: { id: 1, description: "Mathematics" }
-  //   },
-  //   {
-  //     id: 2,
-  //     picture: "../../assets/student2.webp",
-  //     firstName: "María",
-  //     lastName: "García",
-  //     gender: { id: 2, description: "Female" },
-  //     age: 15,
-  //     course: { id: 3, description: "Science" }
-  //   },
-  //   {
-  //     id: 3,
-  //     picture: "../../assets/student3.avif",
-  //     firstName: "Carlos",
-  //     lastName: "López",
-  //     gender: { id: 1, description: "Male" },
-  //     age: 17,
-  //     course: { id: 2, description: "History" }
-  //   },
-  //   {
-  //     id: 4,
-  //     picture: "../../assets/student8.jpeg",
-  //     firstName: "Ana",
-  //     lastName: "Martínez",
-  //     gender: { id: 2, description: "Female" },
-  //     age: 16,
-  //     course: { id: 1, description: "Mathematics" }
-  //   },
-  //   {
-  //     id: 5,
-  //     picture: "../../assets/student1.avif",
-  //     firstName: "Pedro",
-  //     lastName: "Rodríguez",
-  //     gender: { id: 1, description: "Male" },
-  //     age: 15,
-  //     course: { id: 3, description: "Science" }
-  //   },
-  //   {
-  //     id: 6,
-  //     picture: "../../assets/student6.jpeg",
-  //     firstName: "Laura",
-  //     lastName: "Fernández",
-  //     gender: { id: 2, description: "Female" },
-  //     age: 17,
-  //     course: { id: 2, description: "History" }
-  //   },
-  //   {
-  //     id: 7,
-  //     picture: "../../assets/student5.jpeg",
-  //     firstName: "David",
-  //     lastName: "Gómez",
-  //     gender: { id: 1, description: "Male" },
-  //     age: 16,
-  //     course: { id: 1, description: "Mathematics" }
-  //   },
-  //   {
-  //     id: 8,
-  //     picture: "../../assets/student4.jpeg",
-  //     firstName: "Daniel",
-  //     lastName: "Hernández",
-  //     gender: { id: 1, description: "Male" },
-  //     age: 17,
-  //     course: { id: 2, description: "History" }
-  //   },
-  ];
-  courses: Item[] =  [
-    {id: 1, description: 'Primero de secundaria'},
-  ]
-  genders: Item[] = 
-  [{id: 1, description: 'Masculino'},
-  {id: 2, description: 'Femenino'}
-]
-
+loadImage = () => this.image_seleccionada;
+getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
+// Data dumies del app
+  courses: Item[] =  [{id: 1, description: 'Primero de secundaria'}]
+  genders: Item[] = [{id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}]
 }

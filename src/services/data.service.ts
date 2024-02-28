@@ -21,7 +21,7 @@ export class DataService {
       return this.http.post<void>(this.myAppUrl + `/api/student/add`, student)
    }
    updateStudent(id: number, student: StudentData): Observable<void>{
-      const url = `${this.myAppUrl + '/api/student/'+ {id}}`
+      const url = `${this.myAppUrl}/api/student/${id}`;
       return this.http.put<void>(url, student)
    }
    deleteStudent(id: number): Observable<void>{

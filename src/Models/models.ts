@@ -4,9 +4,9 @@ export type Student = {
     picture: string
     firstName: string
     lastName: string,
-    gender: string,
+    gender: Item,
     age: number,
-    courseName: string
+    course: Item
 }
 export type StudentData = {
     Picture?: string
