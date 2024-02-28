@@ -4,17 +4,17 @@ export type Student = {
     picture: string
     firstName: string
     lastName: string,
-    gender: Item,
+    gender: string,
     age: number,
-    course: Item
+    courseName: string
 }
 export type StudentData = {
-    picture?: string
-    firstName: string
-    lastName: string,
-    genderId: number,
-    age: number,
-    courseId: number
+    Picture?: string
+    FirstName: string
+    LastName: string,
+    Age: number,
+    GenderId: number,
+    CourseId: number
 }
 export type Attendance = {
     id: number;
@@ -29,12 +29,11 @@ export type Attendance = {
     course: Item;
 };
 export type AttendanceData = {
-    id: number;
-    date: Date;
-    statusId: number;
-    studentId: number;
-    subjectId: number;
-    courseId: number;
+    Date: Date;
+    StatusId: number;
+    StudentId: number;
+    SubjectId: number;
+    CourseId: number;
 };
 
 export type Grade = {

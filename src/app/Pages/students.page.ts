@@ -51,8 +51,8 @@ import { ToastrService } from 'ngx-toastr';
             </td>
             <td>{{student.lastName}}</td>
             <td>{{student.age | number}}</td>
-            <td>{{student.gender.description}}</td>
-            <td>{{student.course.description}}</td>
+            <td>{{student.gender}}</td>
+            <td>{{student.courseName}}</td>
             <td class="actions space-x-4 text-xl">
               <i class="fa-solid fa-pen-to-square edit" (click)="editStudent(student.id)"></i>
               <i class="fa-solid fa-trash-can delete" (click)="deleteStudent(student.id)"></i>
@@ -95,7 +95,7 @@ import { ToastrService } from 'ngx-toastr';
           <div class="form-container ml-4">
               <label class="label" for="gender">Género: </label>
               <select formControlName="gender" class="input bg-tertiary/5 cursor-pointer" name="gender" id="gender">
-                <option value="" disabled selected>Seleccione un género</option>
+                <option [value]="0" disabled selected>Seleccione un género</option>
                 <option [value]="i.id" *ngFor="let i of genders">{{i.description}}</option>
               </select>
           </div>
@@ -109,7 +109,7 @@ import { ToastrService } from 'ngx-toastr';
           <div class="form-container">
               <label class="label" for="course">Grado: </label>
               <select formControlName="course" class="input bg-tertiary/5 cursor-pointer" name="course" id="course">
-                <option value="" disabled selected>Seleccione un grado</option>
+                <option [value]="0" disabled selected>Seleccione un grado</option>
                 <option [value]="course.id" *ngFor="let course of courses">{{course.description}}</option>
               </select>
           </div>
@@ -139,36 +139,38 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class StudentsPage {
   p: number = 1;
-  creating: boolean = true;
+  creating: boolean = false;
   editing: number | false = false
   student_form: FormGroup
 
   constructor( private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
+    this.getAllStudents();
     this.student_form = this.fb.group({
       image: ['', Validators.required],
       name: ['', Validators.required],
       last_name: ['', Validators.required],
-      gender: ['', Validators.required],
-      age: ['', Validators.required],
-      course: ['', Validators.required],
+      gender: [0, Validators.required],
+      age: [0, Validators.required],
+      course: [0, Validators.required],
     })
 
   }
   getAllStudents(){
     return this.data.getAllStudents().subscribe((students: Student[]) =>{ 
         this.students = students
+        console.log('listado de estudiantes: ', this.students)
     }), (err: any) => console.log(err)
   }
   save(){
       let student_data: StudentData = { 
-        picture: this.image_seleccionada,
-        firstName: this.student_form.get('name')?.value,
-        lastName: this.student_form.get('last_name')?.value,
-        genderId: this.student_form.get('gender')?.value,
-        age: this.student_form.get('age')?.value,
-        courseId: this.student_form.get('course')?.value
+        Picture: this.image_seleccionada,
+        FirstName: this.student_form.get('name')?.value,
+        LastName: this.student_form.get('last_name')?.value,
+        GenderId: parseInt(this.student_form.get('gender')?.value),
+        Age: parseInt(this.student_form.get('age')?.value),
+        CourseId: parseInt(this.student_form.get('course')?.value)
        };
-      
+      console.log('datos del estudiante: ', student_data)
       this.data.addStudent(student_data).subscribe(
         (result) => {
           this.toastr.success('Estudiante agregado exitosamente', 'estudiante agregado!')
@@ -215,78 +217,78 @@ getImagenURL() {
   
   // data dummie for testing
   students: Student[] = [
-    {
-      id: 1,
-      picture: "../../assets/student1.avif",
-      firstName: "Juan",
-      lastName: "Pérez",
-      gender: { id: 1, description: "Male" },
-      age: 16,
-      course: { id: 1, description: "Mathematics" }
-    },
-    {
-      id: 2,
-      picture: "../../assets/student2.webp",
-      firstName: "María",
-      lastName: "García",
-      gender: { id: 2, description: "Female" },
-      age: 15,
-      course: { id: 3, description: "Science" }
-    },
-    {
-      id: 3,
-      picture: "../../assets/student3.avif",
-      firstName: "Carlos",
-      lastName: "López",
-      gender: { id: 1, description: "Male" },
-      age: 17,
-      course: { id: 2, description: "History" }
-    },
-    {
-      id: 4,
-      picture: "../../assets/student8.jpeg",
-      firstName: "Ana",
-      lastName: "Martínez",
-      gender: { id: 2, description: "Female" },
-      age: 16,
-      course: { id: 1, description: "Mathematics" }
-    },
-    {
-      id: 5,
-      picture: "../../assets/student1.avif",
-      firstName: "Pedro",
-      lastName: "Rodríguez",
-      gender: { id: 1, description: "Male" },
-      age: 15,
-      course: { id: 3, description: "Science" }
-    },
-    {
-      id: 6,
-      picture: "../../assets/student6.jpeg",
-      firstName: "Laura",
-      lastName: "Fernández",
-      gender: { id: 2, description: "Female" },
-      age: 17,
-      course: { id: 2, description: "History" }
-    },
-    {
-      id: 7,
-      picture: "../../assets/student5.jpeg",
-      firstName: "David",
-      lastName: "Gómez",
-      gender: { id: 1, description: "Male" },
-      age: 16,
-      course: { id: 1, description: "Mathematics" }
-    },
-    {
-      id: 8,
-      picture: "../../assets/student4.jpeg",
-      firstName: "Daniel",
-      lastName: "Hernández",
-      gender: { id: 1, description: "Male" },
-      age: 17,
-      course: { id: 2, description: "History" }
-    },
+  //   {
+  //     id: 1,
+  //     picture: "../../assets/student1.avif",
+  //     firstName: "Juan",
+  //     lastName: "Pérez",
+  //     gender: { id: 1, description: "Male" },
+  //     age: 16,
+  //     course: { id: 1, description: "Mathematics" }
+  //   },
+  //   {
+  //     id: 2,
+  //     picture: "../../assets/student2.webp",
+  //     firstName: "María",
+  //     lastName: "García",
+  //     gender: { id: 2, description: "Female" },
+  //     age: 15,
+  //     course: { id: 3, description: "Science" }
+  //   },
+  //   {
+  //     id: 3,
+  //     picture: "../../assets/student3.avif",
+  //     firstName: "Carlos",
+  //     lastName: "López",
+  //     gender: { id: 1, description: "Male" },
+  //     age: 17,
+  //     course: { id: 2, description: "History" }
+  //   },
+  //   {
+  //     id: 4,
+  //     picture: "../../assets/student8.jpeg",
+  //     firstName: "Ana",
+  //     lastName: "Martínez",
+  //     gender: { id: 2, description: "Female" },
+  //     age: 16,
+  //     course: { id: 1, description: "Mathematics" }
+  //   },
+  //   {
+  //     id: 5,
+  //     picture: "../../assets/student1.avif",
+  //     firstName: "Pedro",
+  //     lastName: "Rodríguez",
+  //     gender: { id: 1, description: "Male" },
+  //     age: 15,
+  //     course: { id: 3, description: "Science" }
+  //   },
+  //   {
+  //     id: 6,
+  //     picture: "../../assets/student6.jpeg",
+  //     firstName: "Laura",
+  //     lastName: "Fernández",
+  //     gender: { id: 2, description: "Female" },
+  //     age: 17,
+  //     course: { id: 2, description: "History" }
+  //   },
+  //   {
+  //     id: 7,
+  //     picture: "../../assets/student5.jpeg",
+  //     firstName: "David",
+  //     lastName: "Gómez",
+  //     gender: { id: 1, description: "Male" },
+  //     age: 16,
+  //     course: { id: 1, description: "Mathematics" }
+  //   },
+  //   {
+  //     id: 8,
+  //     picture: "../../assets/student4.jpeg",
+  //     firstName: "Daniel",
+  //     lastName: "Hernández",
+  //     gender: { id: 1, description: "Male" },
+  //     age: 17,
+  //     course: { id: 2, description: "History" }
+  //   },
   ];
   courses: Item[] =  [
     {id: 1, description: 'Primero de secundaria'},
