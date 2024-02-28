@@ -9,7 +9,7 @@ export type Student = {
     course: Item
 }
 export type StudentData = {
-    picture: string
+    picture?: string
     firstName: string
     lastName: string,
     genderId: number,

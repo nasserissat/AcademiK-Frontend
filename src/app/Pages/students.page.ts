@@ -117,7 +117,7 @@ import { ToastrService } from 'ngx-toastr';
           <div class="grid col-span-2 pb-3 mx-4">
             <div class="flex items-center justify-center">
               <button
-              (click)="creating = editing = false; this.student_form.reset();"
+              (click)="closeModal()"
                 class="button danger my-4 mr-2 mb-0"
               >            
                 Cerrar
@@ -161,7 +161,7 @@ export class StudentsPage {
   }
   save(){
       let student_data: StudentData = { 
-        picture: this.student_form.get('picture')?.value,
+        picture: this.image_seleccionada,
         firstName: this.student_form.get('name')?.value,
         lastName: this.student_form.get('last_name')?.value,
         genderId: this.student_form.get('gender')?.value,
@@ -190,6 +190,11 @@ export class StudentsPage {
   editStudent(id: number){
     this.editing = id;
     
+  }
+  closeModal(){
+    this.creating = this.editing = false;
+     this.student_form.reset();
+     this.image_seleccionada = null
   }
   
 image_seleccionada!: any;
