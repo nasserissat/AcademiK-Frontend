@@ -188,8 +188,20 @@ export class StudentsPage {
       );
   }
   deleteStudent(id: number){
-    
+    let response = confirm('¿Está seguro de que desea eliminar este estudiante?')
+    if(response == true){
+        this.data.deleteStudent(id).subscribe(
+          () => {
+            this.toastr.success('Estudiante eliminado exitosamente', 'estudiante eliminado!')
+            this.getAllStudents();
+          },error => {
+            this.toastr.error('Error: ' + error.error.error, 'No se pudo eliminar el estudiante')
+            console.log(error)
+          }
+        )
+    }
   }
+  
   editStudent(id: number){
     this.editing = id;
     
