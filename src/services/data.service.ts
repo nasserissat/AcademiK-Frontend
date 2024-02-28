@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { Attendance, AttendanceData, Student, StudentData } from 'src/Models/models';
+import { Attendance, AttendanceData, Grade, GradeData, Student, StudentData } from 'src/Models/models';
 
 @Injectable({providedIn: 'root'})
 export class DataService {
@@ -35,5 +35,13 @@ export class DataService {
    }
    addAttendance(attendance: AttendanceData): Observable<void>{
       return this.http.post<void>(this.myAppUrl + `/api/attendance/add`, attendance)
+   }
+
+   //  Attendances endpoints:
+   getAllGrades(): Observable<Grade[]>{
+   return this.http.get<Grade[]>(this.myAppUrl + '/api/grades')
+   }
+   addGrade(grade: GradeData): Observable<void>{
+      return this.http.post<void>(this.myAppUrl + `/api/grade/add`, grade)
    }
 }

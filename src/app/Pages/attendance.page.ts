@@ -63,7 +63,6 @@ import { DataService } from "src/services/data.service";
                   </td>
                   <td class="actions space-x-4 text-xl">
                      <i class="fa-solid fa-pen-to-square edit" (click)="editAttendance(attendance.id)"></i>
-                     <i class="fa-solid fa-trash-can delete" (click)="deleteAttendance(attendance.id)"></i>
                   </td>
                </tr>
 				</tbody>
@@ -96,10 +95,11 @@ import { DataService } from "src/services/data.service";
               </select>
           </div>
           <!-- modal table -->
-        <table class="table col-span-6 max-h-[50vh]">
-				<thead>
+        <table class="table col-span-6">
+				<thead class="!shadow-none">
                <th class="rounded-l-lg">Estudiantes</th>
                <th>Estado</th>
+               <!-- <th *ngIf="this.attendance_form.get('status')?.value"></th> -->
 				</thead>
 				<tbody>
                <tr *ngFor="let attendance of attendances | paginate: { itemsPerPage: 6, currentPage: p }">
@@ -108,13 +108,17 @@ import { DataService } from "src/services/data.service";
                      <img [src]="attendance.student.picture" alt="student" class="h-14 w-14 rounded-full object-cover">
                      <p>{{attendance.student.name}}</p>
                   </div>     
-               </td>
-                  <td class="actions space-x-4 text-xl">
-                  <select formControlName="status" class="input text-[15px] bg-tertiary/5 cursor-pointer" name="status" id="status">
-                     <option [value]="0" disabled selected>Seleccione un estado</option>
-                     <option [value]="i.id" *ngFor="let i of status">{{i.description}}</option>
-                  </select>
                   </td>
+                     <td class="input space-x-4 text-xl">
+                     <select formControlName="status" class="input text-[15px] bg-tertiary/5 cursor-pointer" name="status" id="status">
+                        <option [value]="0" disabled selected>Seleccione un estado</option>
+                        <option [value]="i.id" *ngFor="let i of status">{{i.description}}</option>
+                     </select>
+                  </td>
+                  <!-- <td *ngIf="this.attendance_form.get('status')?.value">
+                     <i class="fa-solid fa-circle-check text-success"></i>
+                  </td> -->
+
                </tr>
 				</tbody>
 			</table>
@@ -195,9 +199,6 @@ import { DataService } from "src/services/data.service";
      this.attendance_form.reset();
   }
    editAttendance(id: number){
-     
-   }
-   deleteAttendance(id: number){
      
    }
    attendances: Attendance[] = [

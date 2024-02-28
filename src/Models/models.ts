@@ -49,11 +49,9 @@ export type Grade = {
     subject: Item;
 };
 export type GradeData = {
-    id: number;
-    score: number;
-    letterGrade: string;
-    studentId: number;
-    subjectId: number;
+    Score: number;
+    StudentId: number;
+    SubjectId: number;
 };
 export type Course = Item
 export type Subject = Item
