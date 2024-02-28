@@ -4,6 +4,7 @@ import { Item, Student, StudentData } from "src/Models/models";
 import { DataService } from "src/services/data.service";
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
     selector: 'students-page.ts',
     template: `
@@ -43,7 +44,7 @@ import { ToastrService } from 'ngx-toastr';
 					<tr *ngFor="let student of students | paginate: { itemsPerPage: 6, currentPage: p }">
             <td>  
               <div class="flex justify-center">
-                <img [src]="getImageUrl(student.picture)" alt="student" class="h-16 w-16 rounded-full object-cover shadow">
+                <img [src]="student.picture != '' ? getImageUrl(student.picture) : '../../assets/default-satudent-picture.png'" alt="student" class="h-16 w-16 rounded-full object-cover shadow">
               </div>              
             </td>
             <td>
