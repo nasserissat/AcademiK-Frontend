@@ -44,14 +44,17 @@ export type Grade = {
         id: number
         picture: string
         name: string
-        course: Item;
     }
     subject: Item;
+    course: Item;
 };
 export type GradeData = {
-    Score: number;
-    StudentId: number;
+    CourseId: number;
     SubjectId: number;
+    Students:  {
+        id: number
+        score: number
+    }[]
 };
 export type Course = Item
 export type Subject = Item
