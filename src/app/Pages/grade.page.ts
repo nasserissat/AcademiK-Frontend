@@ -74,10 +74,12 @@ import { DataService } from "src/services/data.service";
        <form (ngSubmit)="save()" [formGroup]="grade_form" class="col-span-2 grid grid-cols-6" > 
           <div class="form-container col-span-3">
               <label class="label" for="course">Grado: </label>
-              <select (change)="getStudentsByCourseId()" [(ngModel)]="filters.CourseId" formControlName="course" class="input bg-tertiary/5 cursor-pointer" name="course" id="course">
+              <select (change)="getStudentsByCourseId()" formControlName="course" class="input bg-tertiary/5 cursor-pointer" name="course" id="course">
                 <option [value]="0" disabled selected>Seleccione un grado</option>
                 <option [value]="course.id" *ngFor="let course of courses">{{course.description}}</option>
               </select>
+              <span *ngIf="grade_form.get('course')?.hasError('required')" class="text-danger">El campo es requerido</span>
+
           </div>
           <div class="form-container col-span-3">
               <label class="label" for="subject">Materia: </label>
@@ -85,6 +87,8 @@ import { DataService } from "src/services/data.service";
                 <option [value]="0" disabled selected>Seleccione una materia</option>
                 <option [value]="i.id" *ngFor="let i of subjects">{{i.description}}</option>
               </select>
+              <span *ngIf="grade_form.get('subject')?.hasError('required')" class="text-danger">El campo es requerido</span>
+
           </div>
           <!-- modal table -->
         <table class="table col-span-6">
@@ -103,6 +107,11 @@ import { DataService } from "src/services/data.service";
                <td><p>{{student.firstName + " " + student.lastName}}</p></td>
                <td>
                <input type="number" formControlName="score{{i}}" class="input text-[15px] bg-tertiary/5 w-16 text-center" >
+               <div *ngIf="grade_form.get('score' + i)?.errors && (grade_form.get('score' + i)?.touched || grade_form.get('score' + i)?.dirty)">
+                  <span *ngIf="grade_form.get('score' + i)?.hasError('required')" class="text-danger">El campo es requerido</span>
+                  <span *ngIf="grade_form.get('score' + i)?.hasError('min')" class="text-danger">La calificación no puede ser menor que 0</span>
+                  <span *ngIf="grade_form.get('score' + i)?.hasError('max')" class="text-danger">La calificación no puede ser mayor que 100</span>
+               </div>
                </td>
                </tr>
 				</tbody>
@@ -149,8 +158,8 @@ import { DataService } from "src/services/data.service";
    };
    constructor(private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
       this.grade_form = this.fb.group({
-         course: [0, Validators.required],
-         subject: [0, Validators.required],
+         course: ['', Validators.required],
+         subject: ['', Validators.required],
          students: this.fb.array([])
       });
    }
@@ -169,7 +178,10 @@ import { DataService } from "src/services/data.service";
          (result) => {
             this.students = result
             this.students.forEach((_, index) => {
-               this.grade_form.addControl('score' + index, new FormControl('', Validators.required));
+               this.grade_form.addControl('score' + index, new FormControl('', [
+                  Validators.required,
+                  Validators.min(0),
+                  Validators.max(100)]));
             });
             console.log(result)
          },
@@ -186,21 +198,26 @@ import { DataService } from "src/services/data.service";
             return {id: student.id, score: this.grade_form.get('score' + index)?.value}
          })
       };
-      console.log('datos de las calificaciones: ', grade_data)
-      // this.data.addGrade(grade_data).subscribe(
-      //   (result) => {
-      //     this.toastr.success('Calificación agregada exitosamente', 'Calificación registrada!')
-      //     console.log(result)
-      //     this.getAllGrades();
-      //     this.grade_form.reset();
-      //     this.creating = false
-      //   },
-      //   (error) => {
-      //     this.toastr.error('Error: ' + error.error.error, 'No se pudo registrar la calificación')
-      //     console.log(error)
-      //     this.creating = true
-      //   }
-      // );
+      if(this.grade_form.valid){
+         console.log('datos de las calificaciones: ', grade_data)
+         alert('exito')
+         this.data.addGrade(grade_data).subscribe(
+           (result) => {
+             this.toastr.success('Calificación agregada exitosamente', 'Calificación registrada!')
+             console.log(result)
+             this.getAllGrades();
+             this.grade_form.reset();
+             this.creating = false
+           },
+           (error) => {
+             this.toastr.error('Error: ' + error.error.error, 'No se pudo registrar la calificación')
+             console.log(error)
+             this.creating = true
+           }
+         );
+
+      }
+      this.toastr.error('Error: ', 'No se pudo registrar la calificación') 
   }
  
    editGrade(id: number){
