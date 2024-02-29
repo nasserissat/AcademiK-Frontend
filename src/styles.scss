@@ -18,6 +18,9 @@
     &.modal{
         @apply bg-secondary
     }
+    &.filter{
+        @apply py-2
+    }
 }
 .label{
     @apply text-tertiary/60 font-bold mb-2;
