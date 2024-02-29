@@ -15,6 +15,7 @@ import { DataService } from 'src/services/data.service';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { FilterPipe } from '../pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     StudentsPage,
     GradePage,
     AttendancePage,
-    SettingsPage
+    SettingsPage,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

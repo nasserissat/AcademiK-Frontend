@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
             <!-- search-bar -->
             <div class="flex items-center relative w-1/2 mr-3">
               <i class="fa-solid fa-magnifying-glass search-icon pl-2 absolute left-0"></i>
-              <input type="text" class="input search w-full" placeholder="Buscar estudiantes..." >
+              <input [(ngModel)]="search_text" type="text" class="input search w-full" placeholder="Buscar estudiantes..." >
             </div>
             <!-- filter -->
             <div tabindex="-1" class="bg-white rounded-lg py-3.5 group relative">
@@ -21,21 +21,21 @@ import { ToastrService } from 'ngx-toastr';
                       class="hidden group-focus-within:block absolute top-full z-10 w-auto h-auto right-1 border bg-white rounded-lg shadow-xl text-[11px] 2xl:text-sm"
                     >
                     <div class="flex flex-col mt-1 p-2">
-                        <label class="label" for="course">Curso: </label>
+                        <label class="label" for="course">Filtrar por curso: </label>
                         <select [(ngModel)]="filters.course_id"  class="input filter bg-tertiary/5 cursor-pointer" name="course" id="course">
                           <option [value]="0" disabled selected>Filtrar por curso</option>
                           <option [value]="i.id" *ngFor="let i of courses">{{i.description}}</option>
                         </select>
                     </div>
                     <div class="flex flex-col px-2">
-                        <label class="label" for="gender">Género: </label>
+                        <label class="label" for="gender">Filtrar por género: </label>
                         <select [(ngModel)]="filters.gender_id"  class="input filter bg-tertiary/5 cursor-pointer" name="gender" id="gender">
                           <option [value]="0" disabled selected>Filtrar por género</option>
                           <option [value]="i.id" *ngFor="let i of genders">{{i.description}}</option>
                         </select>
                     </div>
                     <div class="flex flex-col mb-2 p-2">
-                      <label class="label" for="age">Edad: </label>
+                      <label class="label" for="age">Filtrar por edad: </label>
                       <select [(ngModel)]="filters.age"  class="input filter bg-tertiary/5 cursor-pointer" name="age" id="age">
                         <option [value]="0" disabled selected>Filtrar por edad</option>
                         <option [value]="i" *ngFor="let i of [12, 13, 14, 15, 16, 17, 18, 19, 20]">{{i}}</option>
@@ -64,7 +64,7 @@ import { ToastrService } from 'ngx-toastr';
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let student of students | paginate: { itemsPerPage: 6, currentPage: p }">
+					<tr *ngFor="let student of students | appFilter: search_text | paginate: { itemsPerPage: 6, currentPage: p }">
             <td>  
               <div class="flex justify-center">
                 <img [src]="student.picture != '' ? getImageUrl(student.picture) : '../../assets/default-satudent-picture.png'" alt="student" class="h-16 w-16 rounded-full object-cover shadow">
@@ -167,6 +167,7 @@ export class StudentsPage {
   editing: number | false = false
   student_form: FormGroup
   students: Student[] = []
+  search_text = '';
   filters: {
     course_id?: number;
     gender_id?: number;
