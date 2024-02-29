@@ -11,8 +11,18 @@ export class DataService {
       this.myAppUrl = environment.endpoint;
    }
    //  Student endpoints:
-   getAllStudents(filters?: {course_id?: number;  gender_id?: number; age?: number}): Observable<Student[]>{
-      return this.http.get<Student[]>(this.myAppUrl + '/api/students', { params: filters })
+   getAllStudents(filters?: {CourseId?: number | null;  GenderId?: number | null; Age?: number | null}): Observable<Student[]>{
+      let params = new HttpParams();
+      // filtrar los parametros nullos para no incluirlos en la consulta
+      if (filters) {
+         Object.keys(filters).forEach(key => {
+           const filterKey = key as keyof typeof filters;
+           if (filters[filterKey] != null) {
+             params = params.set(filterKey, filters[filterKey]!.toString());
+           }
+         });
+       }
+      return this.http.get<Student[]>(this.myAppUrl + '/api/students', { params: params })
    }
 
    getStudentById(id: number):Observable<Student>{
@@ -48,9 +58,6 @@ export class DataService {
    }
    addGrade(grade: GradeData): Observable<void>{
       return this.http.post<void>(this.myAppUrl + `/api/grade/add`, grade)
-   }
-   getStudentsByCourseId(course_id: number): Observable<CourseDetailed>{
-      return this.http.get<CourseDetailed>(this.myAppUrl + `/api/students/course/${course_id}`)
    }
  
 }

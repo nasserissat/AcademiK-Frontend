@@ -22,21 +22,21 @@ import { ToastrService } from 'ngx-toastr';
                     >
                     <div class="flex flex-col mt-1 p-2">
                         <label class="label" for="course">Filtrar por curso: </label>
-                        <select [(ngModel)]="filters.course_id"  class="input filter bg-tertiary/5 cursor-pointer" name="course" id="course">
+                        <select (change)="getAllStudents()" [(ngModel)]="filters.CourseId"  class="input filter bg-tertiary/5 cursor-pointer" name="course" id="course">
                           <option [value]="0" disabled selected>Filtrar por curso</option>
                           <option [value]="i.id" *ngFor="let i of courses">{{i.description}}</option>
                         </select>
                     </div>
                     <div class="flex flex-col px-2">
                         <label class="label" for="gender">Filtrar por género: </label>
-                        <select [(ngModel)]="filters.gender_id"  class="input filter bg-tertiary/5 cursor-pointer" name="gender" id="gender">
+                        <select (change)="getAllStudents()"  [(ngModel)]="filters.GenderId"  class="input filter bg-tertiary/5 cursor-pointer" name="gender" id="gender">
                           <option [value]="0" disabled selected>Filtrar por género</option>
                           <option [value]="i.id" *ngFor="let i of genders">{{i.description}}</option>
                         </select>
                     </div>
                     <div class="flex flex-col mb-2 p-2">
-                      <label class="label" for="age">Filtrar por edad: </label>
-                      <select [(ngModel)]="filters.age"  class="input filter bg-tertiary/5 cursor-pointer" name="age" id="age">
+                      <label  class="label" for="age">Filtrar por edad: </label>
+                      <select (change)="getAllStudents()"  [(ngModel)]="filters.Age"  class="input filter bg-tertiary/5 cursor-pointer" name="age" id="age">
                         <option [value]="0" disabled selected>Filtrar por edad</option>
                         <option [value]="i" *ngFor="let i of [12, 13, 14, 15, 16, 17, 18, 19, 20]">{{i}}</option>
                       </select>
@@ -169,13 +169,13 @@ export class StudentsPage {
   students: Student[] = []
   search_text = '';
   filters: {
-    course_id?: number;
-    gender_id?: number;
-    age?: number;
+    CourseId?: number | null;
+    GenderId?: number | null;
+    Age?: number | null;
   } = {
-    course_id: 0,
-    gender_id: 0,
-    age: 0,
+    CourseId: 0,
+    GenderId: 0,
+    Age: 0,
   };
 
 
@@ -193,7 +193,6 @@ export class StudentsPage {
   }
   // Obtener todos los estudiantes
   getAllStudents(){
-    
     return this.data.getAllStudents(this.filters).subscribe((students: Student[]) =>{ 
         this.students = students
         console.log('listado de estudiantes: ', this.students)
@@ -286,6 +285,6 @@ onImageSelected(event: any) {
 loadImage = () => this.image_seleccionada;
 getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
 // Data dumies del app
-  courses: Item[] =  [{id: 1, description: 'Primero de secundaria'}]
-  genders: Item[] = [{id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}]
+  courses: Item[] =  [{id: 1, description: 'Primero de secundaria'}, {id: 2, description: 'Segundo de secundaria'}, {id: 0, description: 'Todos los cursos'}]
+  genders: Item[] = [{id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}, {id: 0, description: 'Todos los géneros'}]
 }
