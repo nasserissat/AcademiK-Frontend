@@ -65,6 +65,7 @@ import { DataService } from "src/services/data.service";
                      <i class="fa-solid fa-pen-to-square edit" (click)="editAttendance(attendance.id)"></i>
                   </td>
                </tr>
+               
 				</tbody>
 			</table> 
       <div class="flex w-full bg-white justify-end py-4">

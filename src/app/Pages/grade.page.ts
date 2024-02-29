@@ -13,7 +13,7 @@ import { DataService } from "src/services/data.service";
             <!-- search-bar -->
             <div class="flex items-center relative w-full ml-9">
               <i class="fa-solid fa-magnifying-glass search-icon pl-2 absolute left-0"></i>
-              <input type="text" class="input search w-full" placeholder="Buscar por nombre" >
+              <input [(ngModel)]="search_text" type="text" class="input search w-full" placeholder="Buscar por nombre" >
             </div>
             <!-- filter by course -->
             <select [(ngModel)]="course_id" class="input">
@@ -78,7 +78,7 @@ import { DataService } from "src/services/data.service";
                 <option [value]="0" disabled selected>Seleccione un grado</option>
                 <option [value]="course.id" *ngFor="let course of courses">{{course.description}}</option>
               </select>
-              <span *ngIf="grade_form.get('course')?.hasError('required')" class="text-danger">El campo es requerido</span>
+              <span *ngIf="grade_form.get('course')?.hasError('required') && grade_form.get('course')?.touched" class="text-danger">El campo es requerido</span>
 
           </div>
           <div class="form-container col-span-3">
@@ -87,8 +87,7 @@ import { DataService } from "src/services/data.service";
                 <option [value]="0" disabled selected>Seleccione una materia</option>
                 <option [value]="i.id" *ngFor="let i of subjects">{{i.description}}</option>
               </select>
-              <span *ngIf="grade_form.get('subject')?.hasError('required')" class="text-danger">El campo es requerido</span>
-
+              <span *ngIf="grade_form.get('subject')?.hasError('required') && grade_form.get('subject')?.touched" class="text-danger">El campo es requerido</span>
           </div>
           <!-- modal table -->
         <table class="table col-span-6">
@@ -114,12 +113,17 @@ import { DataService } from "src/services/data.service";
                </div>
                </td>
                </tr>
+               <tr *ngIf="(students | appFilter : search_text).length === 0" tabindex="-1" class="text-center">
+              <td *ngIf="this.grade_form.get('course')?.value == ''" colspan="8" class="sub-title text-tertiary/40 py-4 2xl:py-6">
+                 Seleccione un grado para ver los estudiantes
+              </td>
+            </tr>
 				</tbody>
 			</table>
           <div class="grid col-span-6 pb-3 mx-4">
             <div class="flex items-center justify-center">
               <button
-              (click)="creating = false; this.grade_form.reset();"
+              (click)="creating = false; this.grade_form.reset(); this.students = [] "
                 class="button danger my-4 mr-2 mb-0"
               >            
                 Cerrar
@@ -147,6 +151,7 @@ import { DataService } from "src/services/data.service";
    grades: Grade[] = []
    students: Student[] = []
    students_grade: {id: number, score:number}[] = []
+   search_text = '';
    filters: {
       CourseId?: number | null;
       GenderId?: number | null;

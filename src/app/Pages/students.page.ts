@@ -81,6 +81,11 @@ import { ToastrService } from 'ngx-toastr';
               <i class="fa-solid fa-pen-to-square edit" (click)="editStudent(student.id)"></i>
               <i class="fa-solid fa-trash-can delete" (click)="deleteStudent(student.id)"></i>
           </tr>
+          <tr *ngIf="(students | appFilter : search_text).length === 0" tabindex="-1" class="text-center">
+              <td colspan="8" class="sub-title text-tertiary/40 py-4 2xl:py-6">
+                No se encontró ningún registro
+              </td>
+            </tr>
 				</tbody>
 			</table> 
       <div class="flex w-full bg-white justify-end py-4">
