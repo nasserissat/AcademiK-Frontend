@@ -15,8 +15,33 @@ import { ToastrService } from 'ngx-toastr';
               <input type="text" class="input search w-full" placeholder="Buscar estudiantes..." >
             </div>
             <!-- filter -->
-            <div class="bg-white rounded-lg py-3.5">
+            <div tabindex="-1" class="bg-white rounded-lg py-3.5 group relative">
               <i class="fa-solid fa-filter mx-5 info"></i>
+              <div
+                      class="hidden text-center group-focus-within:block absolute top-full z-10 w-auto h-auto right-1 border bg-white rounded-lg shadow-xl text-[11px] 2xl:text-sm"
+                    >
+                    <div class="m-4">
+                        <label class="label" for="course">Curso: </label>
+                        <select [(ngModel)]="filters.course_id"  class="input filter bg-tertiary/5 cursor-pointer" name="course" id="course">
+                          <option [value]="0" disabled selected>Filtrar por curso</option>
+                          <option [value]="i.id" *ngFor="let i of courses">{{i.description}}</option>
+                        </select>
+                    </div>
+                    <div class="m-4">
+                        <label class="label" for="gender">Género: </label>
+                        <select [(ngModel)]="filters.gender_id"  class="input filter bg-tertiary/5 cursor-pointer" name="gender" id="gender">
+                          <option [value]="0" disabled selected>Filtrar por género</option>
+                          <option [value]="i.id" *ngFor="let i of genders">{{i.description}}</option>
+                        </select>
+                    </div>
+                    <div class="m-4">
+                      <label class="label" for="age">Edad: </label>
+                      <select [(ngModel)]="filters.age"  class="input filter bg-tertiary/5 cursor-pointer" name="age" id="age">
+                        <option [value]="0" disabled selected>Seleccione una edad</option>
+                        <option [value]="i" *ngFor="let i of [12, 13, 14, 15, 16, 17, 18, 19, 20]">{{i}}</option>
+                      </select>
+                    </div>
+                    </div>
             </div>
             <!-- add student button -->
             <button class="button primary mx-5" (click)="creating = true">
@@ -142,6 +167,16 @@ export class StudentsPage {
   editing: number | false = false
   student_form: FormGroup
   students: Student[] = []
+  filters: {
+    course_id?: number | null;
+    gender_id?: number | null;
+    age?: number | null;
+  } = {
+    course_id: 0,
+    gender_id: 0,
+    age: 0,
+  };
+
 
   constructor( private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
     this.getAllStudents();
@@ -157,7 +192,8 @@ export class StudentsPage {
   }
   // Obtener todos los estudiantes
   getAllStudents(){
-    return this.data.getAllStudents().subscribe((students: Student[]) =>{ 
+    
+    return this.data.getAllStudents(this.filters).subscribe((students: Student[]) =>{ 
         this.students = students
         console.log('listado de estudiantes: ', this.students)
     }), (err: any) => console.log(err)

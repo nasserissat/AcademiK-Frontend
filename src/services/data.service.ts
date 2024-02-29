@@ -11,9 +11,20 @@ export class DataService {
       this.myAppUrl = environment.endpoint;
    }
    //  Student endpoints:
-   getAllStudents(): Observable<Student[]>{
-      return this.http.get<Student[]>(this.myAppUrl + '/api/students')
+   getAllStudents(filters?: {course_id?: number | null;  gender_id?: number | null; age?: number | null}): Observable<Student[]>{
+      let params = new HttpParams();
+      // filtrar los parametros nullos para no incluirlos en la consulta
+      if (filters) {
+         Object.keys(filters).forEach(key => {
+           const filterKey = key as keyof typeof filters;
+           if (filters[filterKey] != null) {
+             params = params.set(filterKey, filters[filterKey]!.toString());
+           }
+         });
+       }
+      return this.http.get<Student[]>(this.myAppUrl + '/api/students', { params: params })
    }
+
    getStudentById(id: number):Observable<Student>{
       return this.http.get<Student>(this.myAppUrl + `/api/student/${id}`)
    }
