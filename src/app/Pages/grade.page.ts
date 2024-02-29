@@ -43,7 +43,7 @@ import { DataService } from "src/services/data.service";
                <th class="rounded-r-lg">Acciones</th>
 				</thead>
 				<tbody>
-               <tr *ngFor="let grade of grades | paginate: { itemsPerPage: 6, currentPage: p }">
+               <tr *ngFor="let grade of grades | appFilter: search_text : ['firstName', 'lastName'] | paginate: { itemsPerPage: 6, currentPage: p }">
                   <td>
                   <div class="flex justify-center items-center space-x-4">
                      <img [src]="grade.student.picture" alt="student" class="h-14 w-14 rounded-full object-cover">
@@ -60,6 +60,11 @@ import { DataService } from "src/services/data.service";
                   </td>
                   <td class="actions space-x-4 text-xl">
                      <i class="fa-solid fa-pen-to-square edit" (click)="editGrade(grade.id)"></i>
+                  </td>
+               </tr>
+               <tr *ngIf="(grades | appFilter: search_text : ['firstName', 'lastName']).length === 0" tabindex="-1" class="text-center">
+                  <td colspan="8" class="sub-title text-tertiary/40 py-4 2xl:py-6">
+                     No se encontró ningún registro
                   </td>
                </tr>
 				</tbody>
@@ -113,7 +118,7 @@ import { DataService } from "src/services/data.service";
                </div>
                </td>
                </tr>
-               <tr *ngIf="(students | appFilter : search_text).length === 0" tabindex="-1" class="text-center">
+               <tr>
               <td *ngIf="this.grade_form.get('course')?.value == ''" colspan="8" class="sub-title text-tertiary/40 py-4 2xl:py-6">
                  Seleccione un grado para ver los estudiantes
               </td>
@@ -145,7 +150,7 @@ import { DataService } from "src/services/data.service";
    p: number = 1;
    course_id: number = 0;
    subject_id: number = 0
-   creating: boolean = true;
+   creating: boolean = false;
    editing: number | false = false
    grade_form: FormGroup
    grades: Grade[] = []

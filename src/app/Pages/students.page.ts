@@ -64,7 +64,7 @@ import { ToastrService } from 'ngx-toastr';
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let student of students | appFilter: search_text | paginate: { itemsPerPage: 6, currentPage: p }">
+					<tr *ngFor="let student of students | appFilter: search_text : ['firstName', 'lastName']| paginate: { itemsPerPage: 6, currentPage: p }">
             <td>  
               <div class="flex justify-center">
                 <img [src]="student.picture != '' ? getImageUrl(student.picture) : '../../assets/default-satudent-picture.png'" alt="student" class="h-16 w-16 rounded-full object-cover shadow">
@@ -81,7 +81,7 @@ import { ToastrService } from 'ngx-toastr';
               <i class="fa-solid fa-pen-to-square edit" (click)="editStudent(student.id)"></i>
               <i class="fa-solid fa-trash-can delete" (click)="deleteStudent(student.id)"></i>
           </tr>
-          <tr *ngIf="(students | appFilter : search_text).length === 0" tabindex="-1" class="text-center">
+          <tr *ngIf="(students | appFilter: search_text : ['firstName', 'lastName']).length === 0" tabindex="-1" class="text-center">
               <td colspan="8" class="sub-title text-tertiary/40 py-4 2xl:py-6">
                 No se encontró ningún registro
               </td>

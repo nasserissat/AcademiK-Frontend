@@ -12,7 +12,7 @@ import { DataService } from "src/services/data.service";
             <!-- search-bar -->
             <div class="flex items-center relative w-full ml-9">
               <i class="fa-solid fa-magnifying-glass search-icon pl-2 absolute left-0"></i>
-              <input type="text" class="input search w-full" placeholder="Buscar por nombre" >
+              <input type="text" [(ngModel)]="search_text" class="input search w-full" placeholder="Buscar por nombre" >
             </div>
             <!-- filter by date -->
             <input type="date" class="input">
@@ -45,7 +45,7 @@ import { DataService } from "src/services/data.service";
                <th class="rounded-r-lg">Acciones</th>
 				</thead>
 				<tbody>
-               <tr *ngFor="let attendance of attendances | paginate: { itemsPerPage: 6, currentPage: p }">
+               <tr *ngFor="let attendance of attendances | appFilter: search_text : ['firstName', 'lastName'] | paginate: { itemsPerPage: 6, currentPage: p }">
                   <td>
                   <div class="flex justify-center items-center space-x-4">
                      <img [src]="attendance.student.picture" alt="student" class="h-14 w-14 rounded-full object-cover">
@@ -63,6 +63,11 @@ import { DataService } from "src/services/data.service";
                   </td>
                   <td class="actions space-x-4 text-xl">
                      <i class="fa-solid fa-pen-to-square edit" (click)="editAttendance(attendance.id)"></i>
+                  </td>
+               </tr>
+               <tr *ngIf="(attendances | appFilter: search_text : ['firstName', 'lastName']).length === 0" tabindex="-1" class="text-center">
+                  <td colspan="8" class="sub-title text-tertiary/40 py-4 2xl:py-6">
+                     No se encontró ningún registro
                   </td>
                </tr>
                
@@ -100,7 +105,6 @@ import { DataService } from "src/services/data.service";
 				<thead class="!shadow-none">
                <th class="rounded-l-lg">Estudiantes</th>
                <th>Estado</th>
-               <!-- <th *ngIf="this.attendance_form.get('status')?.value"></th> -->
 				</thead>
 				<tbody>
                <tr *ngFor="let attendance of attendances | paginate: { itemsPerPage: 6, currentPage: p }">
@@ -116,10 +120,6 @@ import { DataService } from "src/services/data.service";
                         <option [value]="i.id" *ngFor="let i of status">{{i.description}}</option>
                      </select>
                   </td>
-                  <!-- <td *ngIf="this.attendance_form.get('status')?.value">
-                     <i class="fa-solid fa-circle-check text-success"></i>
-                  </td> -->
-
                </tr>
 				</tbody>
 			</table>
@@ -156,6 +156,8 @@ import { DataService } from "src/services/data.service";
    creating: boolean = true;
    editing: number | false = false
    attendance_form: FormGroup
+   search_text = '';
+
    constructor(private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
       this.getAllAttendances();
       this.attendance_form = this.fb.group({
