@@ -36,9 +36,9 @@ import { ToastrService } from 'ngx-toastr';
                     </div>
                     <div class="flex flex-col mb-2 p-2">
                       <label  class="label" for="age">Filtrar por edad: </label>
-                      <select (change)="getAllStudents()"  [(ngModel)]="filters.Age"  class="input filter bg-tertiary/5 cursor-pointer" name="age" id="age">
+                      <select (change)="getAllStudents()" [(ngModel)]="filters.Age"  class="input filter bg-tertiary/5 cursor-pointer" name="age" id="age">
                         <option [value]="0" disabled selected>Filtrar por edad</option>
-                        <option [value]="i" *ngFor="let i of [12, 13, 14, 15, 16, 17, 18, 19, 20]">{{i}}</option>
+                        <option [value]="i.id" *ngFor="let i of ages">{{i.description}}</option>
                       </select>
                     </div>
                   </div>
@@ -127,7 +127,7 @@ import { ToastrService } from 'ngx-toastr';
               <label class="label" for="age">Edad: </label>
               <select formControlName="age" class="input bg-tertiary/5 cursor-pointer" name="age" id="age">
                 <option [value]="0" disabled selected>Seleccione una edad</option>
-                <option [value]="i" *ngFor="let i of [12, 13, 14, 15, 16, 17, 18, 19, 20]">{{i}}</option>
+                <option [value]="i" *ngFor="let i of  [10, 11, 12, 13, 14, 15, 16, 17, 18]">{{i}}</option>
               </select>
           </div>
           <div class="form-container">
@@ -285,6 +285,18 @@ onImageSelected(event: any) {
 loadImage = () => this.image_seleccionada;
 getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
 // Data dumies del app
-  courses: Item[] =  [{id: 1, description: 'Primero de secundaria'}, {id: 2, description: 'Segundo de secundaria'}, {id: 0, description: 'Todos los cursos'}]
-  genders: Item[] = [{id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}, {id: 0, description: 'Todos los géneros'}]
+  courses: Item[] =  [{id: 0, description: 'Todos los cursos'}, {id: 1, description: 'Primero de secundaria'}, {id: 2, description: 'Segundo de secundaria'}]
+  genders: Item[] = [ {id: 0, description: 'Todos los géneros'}, {id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}]
+   ages: Item[] = [
+    { id: 0, description: 'Todas las edades' },
+    { id: 10, description: '10' },
+    { id: 11, description: '11' },
+    { id: 12, description: '12' },
+    { id: 13, description: '13' },
+    { id: 14, description: '14' },
+    { id: 15, description: '15' },
+    { id: 16, description: '16' },
+    { id: 17, description: '17' },
+    { id: 18, description: '18' }
+];
 }
