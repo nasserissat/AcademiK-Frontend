@@ -16,15 +16,16 @@ import { DataService } from "src/services/data.service";
               <input [(ngModel)]="search_text" type="text" class="input search w-full" placeholder="Buscar por nombre, apellido ..." >
             </div>
             <!-- filter by course -->
-            <select [(ngModel)]="course_id" class="input">
+            <select (change)="getAllGrades()" [(ngModel)]="grade_filters.CourseId" class="input">
                <option [value]="0" disabled>Filtrar por curso</option>
                <option *ngFor="let item of courses" [value]="item.id">{{item.description}}</option>
             </select>
              <!-- filter by subject -->
-             <select [(ngModel)]="subject_id" class="input">
+             <select  (change)="getAllGrades()"  [(ngModel)]="grade_filters.SubjectId" class="input">
             <option [value]="0" disabled>Filtrar por materia</option>
                <option *ngFor="let item of subjects" [value]="item.id">{{item.description}}</option>
             </select>
+            
             <!-- add student button -->
             <button class="button primary w-1/2 mx-5" (click)="rateStudents()">
                <i class="fa-solid fa-star"></i>
@@ -132,7 +133,7 @@ import { DataService } from "src/services/data.service";
           <div class="grid col-span-6 pb-3 mx-4">
             <div class="flex items-center justify-center">
               <button
-              (click)="creating = false; this.grade_form.reset(); this.students = [] "
+              (click)="closeModal()"
                 class="button danger my-4 mr-2 mb-0"
               >            
                 Cerrar
@@ -239,8 +240,10 @@ import { DataService } from "src/services/data.service";
             return {Id: student.id, Score: this.grade_form.get('score' + index)?.value}
          })
       };
-      if(!this.grade_form.valid)
+      if(!this.grade_form.valid){
+         alert('Debe completar los datos del formulario')
          return;
+      }
 
       console.log('datos de las calificaciones: ', grade_data)
       this.data.addGrade(grade_data).subscribe(
@@ -289,6 +292,11 @@ import { DataService } from "src/services/data.service";
           }
         )
     }
+   }
+   closeModal(){
+      this.creating = false;
+      this.grade_form.reset();
+      this.students = []
    }
    getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
   }

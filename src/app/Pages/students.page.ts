@@ -44,7 +44,7 @@ import { ToastrService } from 'ngx-toastr';
                   </div>
             </div>
             <!-- add student button -->
-            <button class="button primary mx-5" (click)="creating = true">
+            <button class="button primary mx-5" (click)="creating = true; genders.shift()">
               <i class="fa-solid fa-plus"></i>
               Agregar estudiante
             </button>
@@ -188,7 +188,6 @@ export class StudentsPage {
     this.getAllStudents();
     this.getAllCourses();
     this.student_form = this.fb.group({
-      image: ['', Validators.required],
       name: ['', Validators.required],
       last_name: ['', Validators.required],
       gender: [0, Validators.required],
@@ -221,8 +220,13 @@ export class StudentsPage {
         Age: parseInt(this.student_form.get('age')?.value),
         CourseId: parseInt(this.student_form.get('course')?.value)
        };
+       
       console.log('datos del estudiante: ', student_data)
       if(this.editing){
+        if(!this.student_form.valid){
+          alert('Debe completar los datos del formulario')
+          return;
+       }
         this.data.updateStudent(this.editing, student_data).subscribe(() => {
             this.toastr.success('Estudiante actualizado exitosamente', 'Estudiante actualizado!')
             this.getAllStudents();
@@ -233,6 +237,10 @@ export class StudentsPage {
             console.log(error)
           });
       }else{
+        if(!this.student_form.valid){
+          alert('Debe completar los datos del formulario')
+          return;
+       }
         this.data.addStudent(student_data).subscribe(() => {
             this.toastr.success('Estudiante agregado exitosamente', 'Estudiante agregado!')
             this.getAllStudents();
@@ -282,6 +290,7 @@ export class StudentsPage {
     this.creating = this.editing = false;
      this.student_form.reset();
      this.image_seleccionada = null
+     this.genders = [ {id: 0, description: 'Todos los géneros'}, {id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}]
   }
   
   // Logica para convertir, seleccionar y obtener una imagen
