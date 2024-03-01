@@ -140,8 +140,9 @@ import { DataService } from "src/services/data.service";
               </button>
               <button
                 class="button success my-4 mr-2 mb-0"
+                [disabled]="isSaving"
               >
-                Guardar
+                {{isSaving ? 'Guardando...' : 'Guardar'}}
               </button>
             </div>
           </div>
@@ -162,6 +163,7 @@ import { DataService } from "src/services/data.service";
    students: Student[] = []
    courses: Course[] = []
    subjects: Subject[] = []
+   isSaving: boolean = false
    students_grade: {Id: number, Score:number}[] = []
    search_text = '';
    filters: {
@@ -232,7 +234,7 @@ import { DataService } from "src/services/data.service";
          }
       )
    }
-   save(){
+   async save(){
       let grade_data: GradeData = { 
          SubjectId: parseInt(this.grade_form.get('subject')?.value),
          CourseId: parseInt(this.grade_form.get('course')?.value),
@@ -244,24 +246,25 @@ import { DataService } from "src/services/data.service";
          alert('Debe completar los datos del formulario')
          return;
       }
+      this.isSaving = true; 
 
       console.log('datos de las calificaciones: ', grade_data)
-      this.data.addGrade(grade_data).subscribe(
+      await this.data.addGrade(grade_data).subscribe(
          (result) => {
             this.toastr.success('Calificación agregada exitosamente', 'Calificación registrada!')
             console.log(result)
             this.getAllGrades();
             this.grade_form.reset();
             this.creating = false
+            this.isSaving = false;
          },
          (error) => {
             this.toastr.error('Error: ' + error.error.error, 'No se pudo registrar la calificación')
             console.log(error)
             this.creating = true
+            this.isSaving = false;
          }
       );
-
-      this.toastr.error('Error: ', 'No se pudo registrar la calificación') 
   }
  
   // TODO: implementar la edición de calificaciones
