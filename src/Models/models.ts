@@ -40,11 +40,9 @@ export type Grade = {
     id: number;
     score: number;
     letterGrade: string;
-    student: {
-        id: number
-        picture: string
-        name: string
-    }
+    picture: string;
+    firstName: string;
+    lastName:string;
     subject: Item;
     course: Item;
 };
@@ -52,8 +50,8 @@ export type GradeData = {
     CourseId: number;
     SubjectId: number;
     Students:  {
-        id: number
-        score: number
+        Id: number
+        Score: number
     }[]
 };
 export type Course = Item

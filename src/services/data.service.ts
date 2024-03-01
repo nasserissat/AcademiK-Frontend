@@ -53,11 +53,21 @@ export class DataService {
    }
 
    //  Grades endpoints:
-   getAllGrades(): Observable<Grade[]>{
-   return this.http.get<Grade[]>(this.myAppUrl + '/api/grades')
+   getAllGrades(filters?: {CourseId?: number | null; SubjectId?: number | null }): Observable<Grade[]>{
+      let params = new HttpParams();
+      // filtrar los parametros nullos para no incluirlos en la consulta
+      if (filters) {
+         Object.keys(filters).forEach(key => {
+           const filterKey = key as keyof typeof filters;
+           if (filters[filterKey] != null) {
+             params = params.set(filterKey, filters[filterKey]!.toString());
+           }
+         });
+       }
+      return this.http.get<Grade[]>(this.myAppUrl + '/api/grades', { params: params })
    }
-   addGrade(grade: GradeData): Observable<void>{
-      return this.http.post<void>(this.myAppUrl + `/api/grade/add`, grade)
+   addGrade(grade: GradeData): Observable<Grade[]>{
+      return this.http.post<Grade[]>(this.myAppUrl + `/api/grade/add`, grade)
    }
  
 }

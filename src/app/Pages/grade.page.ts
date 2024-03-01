@@ -13,7 +13,7 @@ import { DataService } from "src/services/data.service";
             <!-- search-bar -->
             <div class="flex items-center relative w-full ml-9">
               <i class="fa-solid fa-magnifying-glass search-icon pl-2 absolute left-0"></i>
-              <input [(ngModel)]="search_text" type="text" class="input search w-full" placeholder="Buscar por nombre" >
+              <input [(ngModel)]="search_text" type="text" class="input search w-full" placeholder="Buscar por nombre, apellido ..." >
             </div>
             <!-- filter by course -->
             <select [(ngModel)]="course_id" class="input">
@@ -35,6 +35,7 @@ import { DataService } from "src/services/data.service";
       <!-- table -->
         <table class="table">
 				<thead>
+               <th>Foto</th>
                <th class="rounded-l-lg">Estudiante</th>
                <th>Curso</th>
                <th>Materia</th>
@@ -46,9 +47,11 @@ import { DataService } from "src/services/data.service";
                <tr *ngFor="let grade of grades | appFilter: search_text : ['firstName', 'lastName'] | paginate: { itemsPerPage: 6, currentPage: p }">
                   <td>
                   <div class="flex justify-center items-center space-x-4">
-                     <img [src]="grade.student.picture" alt="student" class="h-14 w-14 rounded-full object-cover">
-                     <p>{{grade.student.name}}</p>
+                     <img [src]="grade.picture != '' ? getImageUrl(grade.picture) : '../../assets/default-satudent-picture.png'" alt="student" class="h-14 w-14 rounded-full object-cover">
                   </div>     
+                  </td>
+               <td>
+                  <p>{{grade.firstName + ' ' + grade.lastName}}</p>
                </td>
                   <td>{{grade.course.description}}</td>
                   <td>{{grade.subject.description}}</td>
@@ -155,7 +158,7 @@ import { DataService } from "src/services/data.service";
    grade_form: FormGroup
    grades: Grade[] = []
    students: Student[] = []
-   students_grade: {id: number, score:number}[] = []
+   students_grade: {Id: number, Score:number}[] = []
    search_text = '';
    filters: {
       CourseId?: number | null;
@@ -166,7 +169,16 @@ import { DataService } from "src/services/data.service";
       GenderId: 0,
       Age: 0,
    };
+   grade_filters: {
+      CourseId?: number | null;
+      SubjectId?: number | null;
+   } = {
+      CourseId: 0,
+      SubjectId: 0,
+   }
+
    constructor(private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
+      this.getAllGrades()
       this.grade_form = this.fb.group({
          course: ['', Validators.required],
          subject: ['', Validators.required],
@@ -174,7 +186,7 @@ import { DataService } from "src/services/data.service";
       });
    }
    getAllGrades(){
-      return this.data.getAllGrades().subscribe((grades: Grade[]) =>{ 
+      return this.data.getAllGrades(this.grade_filters).subscribe((grades: Grade[]) =>{ 
          this.grades = grades
          console.log('listado de calificaciones: ', this.grades)
      }), (err: any) => console.log(err)
@@ -205,7 +217,7 @@ import { DataService } from "src/services/data.service";
          SubjectId: parseInt(this.grade_form.get('subject')?.value),
          CourseId: parseInt(this.grade_form.get('course')?.value),
          Students: this.students_grade = this.students.map((student, index) => {
-            return {id: student.id, score: this.grade_form.get('score' + index)?.value}
+            return {Id: student.id, Score: this.grade_form.get('score' + index)?.value}
          })
       };
       if(this.grade_form.valid){

@@ -12,7 +12,7 @@ import { DataService } from "src/services/data.service";
             <!-- search-bar -->
             <div class="flex items-center relative w-full ml-9">
               <i class="fa-solid fa-magnifying-glass search-icon pl-2 absolute left-0"></i>
-              <input type="text" [(ngModel)]="search_text" class="input search w-full" placeholder="Buscar por nombre" >
+              <input type="text" [(ngModel)]="search_text" class="input search w-full" placeholder="Buscar por nombre, apellido ..." >
             </div>
             <!-- filter by date -->
             <input type="date" class="input">
@@ -153,7 +153,7 @@ import { DataService } from "src/services/data.service";
    p: number = 1;
    course_id: number = 0;
    subject_id: number = 0
-   creating: boolean = true;
+   creating: boolean = false;
    editing: number | false = false
    attendance_form: FormGroup
    search_text = '';
