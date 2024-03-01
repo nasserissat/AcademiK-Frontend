@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
     selector: 'settings-page.ts',
     template: `
        <div class="flex flex-col h-[80vh] justify-center items-center space-y-4">
-         <img src="../../assets/nasserfoto.jpg" alt="Nasser foto" class="h-24 w-24 rounded-full shadow object-cover">
+         <img src="../../assets/nasserfoto.jpg" alt="Nasser foto" class="h-48 w-48 rounded-full shadow object-cover">
          <h1>Nasser Emil Issa Tavares</h1>
          <p>Software Engineer</p>
          <p>Full Stack Developer</p>
