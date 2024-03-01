@@ -16,6 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from '../pipes/filter.pipe';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FilterPipe } from '../pipes/filter.pipe';
     NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule, 
+    CommonModule,
+    BrowserAnimationsModule,
     ToastrModule.forRoot(),
     HttpClientModule
   ],

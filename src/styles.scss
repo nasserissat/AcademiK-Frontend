@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'ngx-toastr/toastr';
 
 .title {
     @apply text-3xl font-bold;
