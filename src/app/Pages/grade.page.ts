@@ -63,6 +63,7 @@ import { DataService } from "src/services/data.service";
                   </td>
                   <td class="actions space-x-4 text-xl">
                      <i class="fa-solid fa-pen-to-square edit" (click)="editGrade(grade.id)"></i>
+                     <i class="fa-solid fa-trash-can delete" (click)="deleteGrade(grade.id)"></i>
                   </td>
                </tr>
                <tr *ngIf="(grades | appFilter: search_text : ['firstName', 'lastName']).length === 0" tabindex="-1" class="text-center">
@@ -145,7 +146,7 @@ import { DataService } from "src/services/data.service";
           </div>
         </form>
       </div>
-    </modal-component>
+   </modal-component>
     `,
     styles: []
   })
@@ -242,8 +243,34 @@ import { DataService } from "src/services/data.service";
       this.toastr.error('Error: ', 'No se pudo registrar la calificación') 
   }
  
-   editGrade(id: number){
-     
+  // TODO: implementar la edición de calificaciones
+  editGrade(id: number){
+   this.editing = id;
+   this.data.getGradeById(id).subscribe(
+     (grade: Grade) => {
+       this.grade_form.patchValue({
+         course: grade.course.id,
+         subject: grade.subject.id,
+       });
+       if(grade.picture){
+         this.students[0].picture = this.getImageUrl(grade.picture)
+       }
+     })
+   }
+   deleteGrade(id: number){
+      console.log(id, 'sdssdsdsd')
+      let response = confirm('¿Está seguro de que desea eliminar esta calificación?')
+    if(response == true){
+        this.data.deleteGrade(id).subscribe(
+          () => {
+            this.toastr.success('Calificación eliminada exitosamente', 'Calificación eliminada!')
+            this.getAllGrades();
+          },error => {
+            this.toastr.error('Error: ' + error.error.error, 'No se pudo eliminar la calificación eliminada')
+            console.log(error)
+          }
+        )
+    }
    }
    getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
 

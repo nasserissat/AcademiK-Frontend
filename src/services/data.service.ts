@@ -69,5 +69,13 @@ export class DataService {
    addGrade(grade: GradeData): Observable<Grade[]>{
       return this.http.post<Grade[]>(this.myAppUrl + `/api/grade/add`, grade)
    }
+
+   getGradeById(id: number):Observable<Grade>{
+      return this.http.get<Grade>(this.myAppUrl + `/api/grade/${id}`)
+   }
+   deleteGrade(id: number): Observable<void>{
+      console.log(this.myAppUrl + `/api/grade/${id}`)
+      return this.http.delete<void>(this.myAppUrl + `/api/grade/${id}`)
+   }
  
 }
