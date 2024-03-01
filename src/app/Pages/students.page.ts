@@ -186,6 +186,7 @@ export class StudentsPage {
 
   constructor( private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
     this.getAllStudents();
+    this.getAllCourses();
     this.student_form = this.fb.group({
       image: ['', Validators.required],
       name: ['', Validators.required],
@@ -195,6 +196,13 @@ export class StudentsPage {
       course: [0, Validators.required],
     })
 
+  }
+  getAllCourses(){
+    this.data.getAllCourses().subscribe(data => {
+        this.courses = data;
+      }, error => {
+        console.error(error);
+      });
   }
   // Obtener todos los estudiantes
   getAllStudents(){
@@ -290,7 +298,7 @@ onImageSelected(event: any) {
 loadImage = () => this.image_seleccionada;
 getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
 // Data dumies del app
-  courses: Item[] =  [{id: 0, description: 'Todos los cursos'}, {id: 1, description: 'Primero de secundaria'}, {id: 2, description: 'Segundo de secundaria'}]
+  courses: Item[] = []
   genders: Item[] = [ {id: 0, description: 'Todos los géneros'}, {id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}]
    ages: Item[] = [
     { id: 0, description: 'Todas las edades' },

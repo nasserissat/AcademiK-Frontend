@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { Attendance, AttendanceData, Grade, GradeData, Student, StudentData } from 'src/Models/models';
+import { Attendance, AttendanceData, Grade, GradeData, Item, Student, StudentData } from 'src/Models/models';
 
 @Injectable({providedIn: 'root'})
 export class DataService {
@@ -77,5 +77,12 @@ export class DataService {
       console.log(this.myAppUrl + `/api/grade/${id}`)
       return this.http.delete<void>(this.myAppUrl + `/api/grade/${id}`)
    }
- 
+
+   // Generics query
+   getAllCourses(): Observable<Item[]>{ 
+      return this.http.get<Item[]>(this.myAppUrl + '/api/courses')
+   }
+   getAllSubjects(): Observable<Item[]>{ 
+      return this.http.get<Item[]>(this.myAppUrl + '/api/subjects')
+   }
 }

@@ -159,6 +159,8 @@ import { DataService } from "src/services/data.service";
    grade_form: FormGroup
    grades: Grade[] = []
    students: Student[] = []
+   courses: Course[] = []
+   subjects: Subject[] = []
    students_grade: {Id: number, Score:number}[] = []
    search_text = '';
    filters: {
@@ -180,12 +182,28 @@ import { DataService } from "src/services/data.service";
 
    constructor(private fb: FormBuilder, private data: DataService, private toastr: ToastrService){
       this.getAllGrades()
+      this.getAllCourses()
+      this.getAllSubjects()
       this.grade_form = this.fb.group({
          course: ['', Validators.required],
          subject: ['', Validators.required],
          students: this.fb.array([])
       });
    }
+   getAllCourses(){
+      this.data.getAllCourses().subscribe(data => {
+          this.courses = data;
+        }, error => {
+          console.error(error);
+        });
+    }
+    getAllSubjects(){
+      this.data.getAllSubjects().subscribe(data => {
+          this.subjects = data;
+        }, error => {
+          console.error(error);
+        });
+    }
    getAllGrades(){
       return this.data.getAllGrades(this.grade_filters).subscribe((grades: Grade[]) =>{ 
          this.grades = grades
@@ -221,25 +239,25 @@ import { DataService } from "src/services/data.service";
             return {Id: student.id, Score: this.grade_form.get('score' + index)?.value}
          })
       };
-      if(this.grade_form.valid){
-         console.log('datos de las calificaciones: ', grade_data)
-         alert('exito')
-         this.data.addGrade(grade_data).subscribe(
-           (result) => {
-             this.toastr.success('Calificación agregada exitosamente', 'Calificación registrada!')
-             console.log(result)
-             this.getAllGrades();
-             this.grade_form.reset();
-             this.creating = false
-           },
-           (error) => {
-             this.toastr.error('Error: ' + error.error.error, 'No se pudo registrar la calificación')
-             console.log(error)
-             this.creating = true
-           }
-         );
+      if(!this.grade_form.valid)
+         return;
 
-      }
+      console.log('datos de las calificaciones: ', grade_data)
+      this.data.addGrade(grade_data).subscribe(
+         (result) => {
+            this.toastr.success('Calificación agregada exitosamente', 'Calificación registrada!')
+            console.log(result)
+            this.getAllGrades();
+            this.grade_form.reset();
+            this.creating = false
+         },
+         (error) => {
+            this.toastr.error('Error: ' + error.error.error, 'No se pudo registrar la calificación')
+            console.log(error)
+            this.creating = true
+         }
+      );
+
       this.toastr.error('Error: ', 'No se pudo registrar la calificación') 
   }
  
@@ -273,15 +291,4 @@ import { DataService } from "src/services/data.service";
     }
    }
    getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
-
-      courses: Course[] = [
-         {id: 1, description: 'Primero de secundaria'},
-         {id: 2, description: 'Segundo de secundaria'}
-      ]
-      subjects: Subject[] = [
-         {id: 1, description: 'Español'},
-         {id: 2, description: 'Matematicas'},
-         {id: 3, description: 'Naturales'},
-         {id: 4, description: 'Sociales'},
-      ]
   }
