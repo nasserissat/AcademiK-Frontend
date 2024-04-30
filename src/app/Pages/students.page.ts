@@ -307,7 +307,10 @@ onImageSelected(event: any) {
 loadImage = () => this.image_seleccionada;
 getImageUrl = (filename: string): string => this.data.getImageUrl(filename);
 // Data dumies del app
-  courses: Item[] = []
+  courses: Item[] = [
+    {id: 1, description: 'Primero secundaria'},
+    {id: 2, description: 'Segundo de secundaria'},
+  ]
   genders: Item[] = [ {id: 0, description: 'Todos los géneros'}, {id: 1, description: 'Masculino'}, {id: 2, description: 'Femenino'}]
    ages: Item[] = [
     { id: 0, description: 'Todas las edades' },

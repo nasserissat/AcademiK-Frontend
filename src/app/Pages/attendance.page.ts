@@ -17,12 +17,12 @@ import { DataService } from "src/services/data.service";
             <!-- filter by date -->
             <input type="date" class="input">
             <!-- filter by course -->
-            <select [(ngModel)]="course_id" class="input">
+            <select (change)="getAllAttendances()"  [(ngModel)]="course_id" class="input">
                <option [value]="0" disabled>Filtrar por curso</option>
                <option *ngFor="let item of courses" [value]="item.id">{{item.description}}</option>
             </select>
              <!-- filter by subject -->
-             <select [(ngModel)]="subject_id" class="input">
+             <select (change)="getAllAttendances()" [(ngModel)]="subject_id" class="input">
             <option [value]="0" disabled>Filtrar por materia</option>
                <option *ngFor="let item of subjects" [value]="item.id">{{item.description}}</option>
             </select>
@@ -204,12 +204,13 @@ import { DataService } from "src/services/data.service";
    editAttendance(id: number){
      
    }
+   //TODO create the attendance endpoint
    attendances: Attendance[] = [
    {
       id: 1,
       date: new Date(),
       status: 1,
-      student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
+      student: {id: 1, picture: 'assets/student7.avif', name: 'Pedro Tavarez'},
       subject: {id: 1, description: 'Español'},
       course: {id: 1, description: 'Primero de secundaria'}
    },
@@ -217,7 +218,7 @@ import { DataService } from "src/services/data.service";
       id: 1,
       date: new Date(),
       status: 3,
-      student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
+      student: {id: 1, picture: 'assets/student1.avif', name: 'Maria Fernanda'},
       subject: {id: 1, description: 'Español'},
        course: {id: 1, description: 'Primero de secundaria'}
    },
@@ -225,7 +226,7 @@ import { DataService } from "src/services/data.service";
       id: 1,
       date: new Date(),
       status: 2,
-      student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
+      student: {id: 1, picture: '../../assets/student5.jpeg', name: 'Marcos James'},
       subject: {id: 1, description: 'Español'},
        course: {id: 1, description: 'Primero de secundaria'}
    },
@@ -233,7 +234,7 @@ import { DataService } from "src/services/data.service";
       id: 1,
       date: new Date(),
       status: 1,
-      student: {id: 1, picture: '../../assets/student3.avif', name: 'Pedro Tavarez'},
+      student: {id: 1, picture: '../../assets/student3.avif', name: 'Pablo García'},
       subject: {id: 1, description: 'Español'},
        course: {id: 1, description: 'Primero de secundaria'}
    },
